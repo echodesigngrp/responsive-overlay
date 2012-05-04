@@ -21,7 +21,7 @@ OverlayPopover.prototype = new google.maps.OverlayView();
 // Add popover to map
 OverlayPopover.prototype.onAdd = function() {	
 	var container = $(this.container).get(0);
-	var popover = $('.popover', this.container).get(0);
+	var popover = $(this.container).children().first().get(0);
 	
 	var events = ["mousedown", "mouseover", "mouseout", "mouseup",
       "click", "dblclick", "touchstart", "touchend", "touchmove"];
