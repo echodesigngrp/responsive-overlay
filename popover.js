@@ -7,6 +7,8 @@ function OverlayPopover(html, extend) {
 		'cursor': 'auto'
 	});
 	
+	this.pixelOffset = 34;
+	
 	if ( extend )
 	{
 		extend(this);
@@ -29,18 +31,13 @@ OverlayPopover.prototype.onAdd = function() {
 }
 
 // Position popover in map viewport
-OverlayPopover.prototype.draw = function() {
-	var overlayProjection = this.getProjection();
-	
+OverlayPopover.prototype.draw = function() {	
 	var position = this.getProjection().fromLatLngToDivPixel(this.marker.getPosition());
-	var div = this.container;
-	
-	var marker_height = 34;
-	
+		
 	if ( position ) {
 		$(this.container).offset({
-			left: position.x - ($(div).outerWidth() / 2),
-			top: position.y - $(div).outerHeight() - marker_height
+			left: position.x - ($(this.container).outerWidth() / 2),
+			top: position.y - $(this.container).outerHeight() - this.pixelOffset
 		});
 	}
 }
