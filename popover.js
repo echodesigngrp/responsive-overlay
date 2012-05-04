@@ -4,7 +4,7 @@ function OverlayPopover(html, extend) {
 		'display': 'block',
 		'width': '400px',
 		'height': '400px',
-		'cursor': 'auto'
+		'cursor': 'auto',
 	});
 	
 	this.pixelOffset = 34;
@@ -19,23 +19,28 @@ function OverlayPopover(html, extend) {
 OverlayPopover.prototype = new google.maps.OverlayView();
 
 // Add popover to map
-OverlayPopover.prototype.onAdd = function() {
-	var div = $(this.container).get(0);
+OverlayPopover.prototype.onAdd = function() {	
+	var container = $(this.container).get(0);
+	var popover = $('.popover', this.container).get(0);
 
-	google.maps.event.addDomListener(div, 'mousedown', function(e) {e.stopPropagation()});
-	google.maps.event.addDomListener(div, 'dblclick', function(e) {e.stopPropagation()});
-	google.maps.event.addDomListener(div, 'DOMMouseScroll', function(e) {e.stopPropagation()});
+	google.maps.event.addDomListener(popover, 'mousedown', function(e) {e.stopPropagation()});
+	google.maps.event.addDomListener(popover, 'dblclick', function(e) {e.stopPropagation()});
+	google.maps.event.addDomListener(popover, 'DOMMouseScroll', function(e) {e.stopPropagation()});
 	
 	var panes = this.getPanes();
-	panes.overlayMouseTarget.appendChild(div);
+	panes.floatPane.appendChild(container);
+}
+
+OverlayPopover.prototype.onRemove = function() {	
+	$(this.container).remove();
 }
 
 // Position popover in map viewport
-OverlayPopover.prototype.draw = function() {	
+OverlayPopover.prototype.draw = function() {
 	var position = this.getProjection().fromLatLngToDivPixel(this.marker.getPosition());
-		
+
 	if ( position ) {
-		$(this.container).offset({
+		$(this.container).css({
 			left: position.x - ($(this.container).outerWidth() / 2),
 			top: position.y - $(this.container).outerHeight() - this.pixelOffset
 		});

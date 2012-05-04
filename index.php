@@ -23,7 +23,7 @@
 		var coord = new google.maps.LatLng(41.878114, -87.629798);
 	
         var myOptions = {
-          zoom: 8,
+          zoom: 16,
           center: coord,
           mapTypeId: google.maps.MapTypeId.ROADMAP
         };
@@ -40,7 +40,7 @@
 		
 		var popover = new OverlayPopover(html);
 		
-		google.maps.event.addListener(marker, 'click', function() {			
+		google.maps.event.addListener(marker, 'click', function() {	
 			popover.toggle(marker);
 	    });
       }
