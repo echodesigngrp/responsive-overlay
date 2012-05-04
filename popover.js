@@ -1,7 +1,5 @@
 function OverlayPopover(html, extend) {	
-	this.container = $('<div class="overlay_popover_container">'+html+'</div>');
-	
-	$(this.container).css({
+	this.container = $('<div class="overlay_popover_container">'+html+'</div>').css({
 		'position': 'absolute',
 		'display': 'block',
 		'width': '400px',
@@ -63,6 +61,7 @@ OverlayPopover.prototype.show = function(marker) {
 	if (this.container) this.container.show();
 }
 
+// Return whether container is visible or not.
 OverlayPopover.prototype.is_visible = function() {
 	return $(this.container).is(":visible");
 }
