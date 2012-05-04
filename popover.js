@@ -1,7 +1,7 @@
 function OverlayPopover(html, extend) {
-	var div = $('<div class="overlay_popover_container">'+html+'</div>');
+	var container = $('<div class="overlay_popover_container">'+html+'</div>');
 	
-	$(div).css({
+	$(container).css({
 		'position': 'absolute',
 		'display': 'block',
 		'width': '400px',
@@ -9,7 +9,7 @@ function OverlayPopover(html, extend) {
 		'cursor': 'auto'
 	});
 	
-	this.div = div;
+	this.container = container;
 	
 	if ( extend )
 	{
@@ -22,7 +22,7 @@ OverlayPopover.prototype = new google.maps.OverlayView();
 
 // Add popover to map
 OverlayPopover.prototype.onAdd = function() {
-	var div = $(this.div).get(0);
+	var div = $(this.container).get(0);
 
 	google.maps.event.addDomListener(div, 'mousedown', function(e) {e.stopPropagation()});
 	google.maps.event.addDomListener(div, 'dblclick', function(e) {e.stopPropagation()});
@@ -37,12 +37,12 @@ OverlayPopover.prototype.draw = function() {
 	var overlayProjection = this.getProjection();
 	
 	var position = this.getProjection().fromLatLngToDivPixel(this.marker.getPosition());
-	var div = this.div;
+	var div = this.container;
 	
 	var marker_height = 34;
 	
 	if ( position ) {
-		$(this.div).offset({
+		$(this.container).offset({
 			left: position.x - ($(div).outerWidth() / 2),
 			top: position.y - $(div).outerHeight() - marker_height
 		});
@@ -50,7 +50,7 @@ OverlayPopover.prototype.draw = function() {
 }
 
 OverlayPopover.prototype.hide = function() {
-	if (this.div) this.div.hide();
+	if (this.container) this.container.hide();
 }
 
 OverlayPopover.prototype.show = function(marker) {
@@ -60,13 +60,13 @@ OverlayPopover.prototype.show = function(marker) {
 		this.setMap(this.marker.getMap());
 	}
 
-	if (this.div) this.div.show();
+	if (this.container) this.container.show();
 }
 
 // Toggle on/off popover.
 OverlayPopover.prototype.toggle = function(marker) {
-	if ( this.div ) {
-		if ( $(this.div).is(":visible") ) {
+	if ( this.container ) {
+		if ( $(this.container).is(":visible") ) {
 	    	this.hide();
 	    } else {
 	    	this.show(marker);
