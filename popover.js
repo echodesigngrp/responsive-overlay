@@ -67,11 +67,5 @@ OverlayPopover.prototype.is_visible = function() {
 
 // Toggle on/off popover.
 OverlayPopover.prototype.toggle = function(marker) {
-	if ( this.container ) {
-		if ( this.is_visible() ) {
-	    	this.hide();
-	    } else {
-	    	this.show(marker);
-	    }
-	}
+	this.is_visible() ? this.hide() : this.show(marker);
 }
