@@ -1,5 +1,5 @@
-function OverlayPopover(html, extend) {
-	var container = $('<div class="overlay_popover_container">'+html+'</div>');
+function OverlayPopover(html, extend) {	
+	this.container = $('<div class="overlay_popover_container">'+html+'</div>');
 	
 	$(container).css({
 		'position': 'absolute',
@@ -8,8 +8,6 @@ function OverlayPopover(html, extend) {
 		'height': '400px',
 		'cursor': 'auto'
 	});
-	
-	this.container = container;
 	
 	if ( extend )
 	{
