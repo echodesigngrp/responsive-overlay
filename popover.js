@@ -22,10 +22,13 @@ OverlayPopover.prototype = new google.maps.OverlayView();
 OverlayPopover.prototype.onAdd = function() {	
 	var container = $(this.container).get(0);
 	var popover = $('.popover', this.container).get(0);
+	
+	var events = ["mousedown", "mouseover", "mouseout", "mouseup",
+      "click", "dblclick", "touchstart", "touchend", "touchmove"];
 
-	google.maps.event.addDomListener(popover, 'mousedown', function(e) {e.stopPropagation()});
-	google.maps.event.addDomListener(popover, 'dblclick', function(e) {e.stopPropagation()});
-	google.maps.event.addDomListener(popover, 'DOMMouseScroll', function(e) {e.stopPropagation()});
+	for (i = 0; i < events.length; i++) {
+		google.maps.event.addDomListener(popover, events[i], function(e) {e.stopPropagation()});
+	} 
 	
 	var panes = this.getPanes();
 	panes.floatPane.appendChild(container);
