@@ -47,10 +47,12 @@ OverlayPopover.prototype.draw = function() {
 	}
 }
 
+// Hide overlay container
 OverlayPopover.prototype.hide = function() {
 	if (this.container) this.container.hide();
 }
 
+// Show overlay container
 OverlayPopover.prototype.show = function(marker) {
 	if ( this.marker != marker )
 	{
