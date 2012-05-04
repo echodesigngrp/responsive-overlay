@@ -1,5 +1,5 @@
 function OverlayPopover(html, extend) {	
-	this.container = $('<div class="overlay_popover_container">'+html+'</div>').css({
+	this.container = $('<div class="overlay-popover-container">'+html+'</div>').css({
 		'position': 'absolute',
 		'display': 'block',
 		'width': '400px',
