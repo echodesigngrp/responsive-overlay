@@ -41,11 +41,18 @@ OverlayPopover.prototype.onRemove = function() {
 // Position popover in map viewport
 OverlayPopover.prototype.draw = function() {
 	var position = this.getProjection().fromLatLngToDivPixel(this.marker.getPosition());
+	
+	var offset = this.pixelOffset;
+	
+	if ( this.marker.getSize )
+	{
+		offset = this.marker.getSize().height;
+	}
 
 	if ( position ) {
 		$(this.container).css({
 			left: position.x - ($(this.container).outerWidth() / 2),
-			top: position.y - $(this.container).outerHeight() - this.pixelOffset
+			top: position.y - $(this.container).outerHeight() - offset
 		});
 	}
 }

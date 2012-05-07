@@ -16,6 +16,7 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.0/jquery.min.js" type="text/javascript"></script>
     <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?sensor=false"></script>
 	<script src="popover.js"></script>
+	<script src="marker.js"></script>
 	<link href="css/style.css" rel="stylesheet" />
     <script type="text/javascript">
       var map;
@@ -31,10 +32,11 @@
         map = new google.maps.Map(document.getElementById('map_canvas'),
             myOptions);
 
-	    var marker = new google.maps.Marker({
-	        position: coord,
-	        map: map,
-	    });
+	    var marker = new OverlayMarker({
+			coord: coord,
+			map: map,
+			className: 'test'
+		});
 	
 		var html = '<div class="popover">This is custom</div>';
 		

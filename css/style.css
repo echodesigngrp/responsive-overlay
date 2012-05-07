@@ -27,3 +27,8 @@
       /* Smaller than Kindle Fire */
       width: 150px;
       margin-left: -75px; } }
+
+.marker {
+  width: 20px;
+  height: 20px;
+  background: black; }
