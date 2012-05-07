@@ -34,6 +34,7 @@
 	    var marker = new google.maps.Marker({
 	        position: coord,
 	        map: map,
+			optimized: false
 	    });
 	
 		var html = '<div class="popover">This is custom</div>';
@@ -43,6 +44,8 @@
 		google.maps.event.addListener(marker, 'click', function() {	
 			popover.toggle(marker);
 	    });
+	
+		popover.show(marker);
       }
 
       google.maps.event.addDomListener(window, 'load', initialize);

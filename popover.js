@@ -41,29 +41,102 @@ OverlayPopover.prototype.onRemove = function() {
 // Position popover in map viewport
 OverlayPopover.prototype.draw = function() {
 	var position = this.getProjection().fromLatLngToDivPixel(this.marker.getPosition());
+	var containerPosition = this.getProjection().fromLatLngToContainerPixel(this.marker.getPosition());
+
+	if ( containerPosition ) {
+		var x = containerPosition.x - ($(this.container).outerWidth() / 2);
+		var y = containerPosition.y - $(this.container).outerHeight() - this.pixelOffset;
+		
+		$(this.container).data('x', x);
+		$(this.container).data('y', y);
+		
+		console.log(this.container.data('y'));
+	}
 
 	if ( position ) {
-		$(this.container).css({
-			left: position.x - ($(this.container).outerWidth() / 2),
-			top: position.y - $(this.container).outerHeight() - this.pixelOffset
-		});
+		var x = position.x - ($(this.container).outerWidth() / 2);
+		var y = position.y - $(this.container).outerHeight() - this.pixelOffset;
+		
+		$(this.container).css({ left: x, top: y });
+	}
+}
+
+// OverlayPopover.prototype.containerOrigin = function() {
+// 	var coords = this.marker.getPosition();
+// 	var position = this.getProjection().fromLatLngToContainerPixel(coords);
+// 	var centerX = position.x;
+// 	var centerY = position.y - this.pixelOffset;	
+// 	
+// 	var x = centerX - ($(this.container).outerWidth() / 2);
+// 	var y = centerY + $(this.container).outerHeight();
+// 	
+// 	console.log(x + ' ' + y);
+// }
+
+OverlayPopover.prototype.containerBounds = function() {
+	// var coords = this.marker.getPosition();
+	// var position = this.getProjection().fromLatLngToDivPixel(coords);
+	// var centerX = position.x;
+	// var centerY = position.y - this.pixelOffset;
+	// 	
+	// var swx = centerX - ($(this.container).outerWidth() / 2);
+	// var swy = centerY;
+	// var swp = 
+	// 
+	// var nex = centerX + ($(this.container).outerWidth() / 2);
+	// var ney = centerY + $(this.container).outerHeight();
+}
+
+OverlayPopover.prototype.pan = function () {
+
+	var map;
+
+	var xOffset = 0, yOffset = 0;
+
+    map = this.getMap();
+// 
+    if (map instanceof google.maps.Map) {
+		var mapDiv = map.getDiv();
+		var mapWidth = mapDiv.offsetWidth;
+		var mapHeight = mapDiv.offsetHeight;
+	// 	var overlayOffsetX = 0;
+	// 	var overlayOffsetY = 0;
+	// 	var overlayWidth = $(this.container).width();
+	// 	var overlayHeight = $(this.container).height();
+	// 	var padding = 10;
+	// 	// var position = this.getProjection().fromLatLngToDivPixel(coords);
+	// 	
+	// 	
+		var containerLeft = $(this.container).data('x');
+		var containerTop =  $(this.container).data('y');
+		var containerWidth = $(this.container).outerWidth();
+		var containerHeight = $(this.container).outerHeight();
+		
+		if ( (containerLeft + containerWidth) > mapWidth ) {
+			xOffset = mapWidth - (containerLeft + containerWidth) - padding;
+		}
+	
+		map.panBy(xOffset, yOffset);
 	}
 }
 
 // Hide overlay container
 OverlayPopover.prototype.hide = function() {
 	if (this.container) this.container.hide();
+	
+	this.setMap(null);
 }
 
 // Show overlay container
 OverlayPopover.prototype.show = function(marker) {
-	if ( this.marker != marker )
-	{
-		this.marker = marker;
-		this.setMap(this.marker.getMap());
-	}
+	this.marker = marker;
+	this.setMap(this.marker.getMap());
 
-	if (this.container) this.container.show();
+	if (this.container) {
+		this.container.show();
+		
+		this.pan();
+	}
 }
 
 // Return whether container is visible or not.
