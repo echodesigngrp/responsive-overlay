@@ -7,7 +7,10 @@ function OverlayPopover(html, extend) {
 		'cursor': 'auto',
 	});
 	
+	this.popover = $(this.container).children().first()[0];
+		
 	this.pixelOffset = 34;
+	this.panPadding = 10;
 	
 	if ( extend )
 	{
@@ -44,13 +47,13 @@ OverlayPopover.prototype.draw = function() {
 	var containerPosition = this.getProjection().fromLatLngToContainerPixel(this.marker.getPosition());
 
 	if ( containerPosition ) {
-		var x = containerPosition.x - ($(this.container).outerWidth() / 2);
-		var y = containerPosition.y - $(this.container).outerHeight() - this.pixelOffset;
+		var x = containerPosition.x - ($(this.popover).outerWidth() / 2);
+		var y = containerPosition.y - $(this.popover).outerHeight() - this.pixelOffset;
 		
-		$(this.container).data('x', x);
-		$(this.container).data('y', y);
+		$(this.popover).data('x', x);
+		$(this.popover).data('y', y);
 		
-		console.log(this.container.data('y'));
+		this.pan();
 	}
 
 	if ( position ) {
@@ -61,30 +64,19 @@ OverlayPopover.prototype.draw = function() {
 	}
 }
 
-// OverlayPopover.prototype.containerOrigin = function() {
-// 	var coords = this.marker.getPosition();
-// 	var position = this.getProjection().fromLatLngToContainerPixel(coords);
-// 	var centerX = position.x;
-// 	var centerY = position.y - this.pixelOffset;	
-// 	
-// 	var x = centerX - ($(this.container).outerWidth() / 2);
-// 	var y = centerY + $(this.container).outerHeight();
-// 	
-// 	console.log(x + ' ' + y);
-// }
+OverlayPopover.prototype.popoverBounds = function() {
+	var bounds = {
+		x: $(this.popover).data('x'),
+		y: $(this.popover).data('y'),
+		w: $(this.popover).outerWidth(),
+		h: $(this.popover).outerHeight()
+	};
+	
+	var string = 'x:'+bounds.x+' y:'+bounds.y+' w:'+bounds.w+' h:'+bounds.h;
 
-OverlayPopover.prototype.containerBounds = function() {
-	// var coords = this.marker.getPosition();
-	// var position = this.getProjection().fromLatLngToDivPixel(coords);
-	// var centerX = position.x;
-	// var centerY = position.y - this.pixelOffset;
-	// 	
-	// var swx = centerX - ($(this.container).outerWidth() / 2);
-	// var swy = centerY;
-	// var swp = 
-	// 
-	// var nex = centerX + ($(this.container).outerWidth() / 2);
-	// var ney = centerY + $(this.container).outerHeight();
+	$('title').text(string);
+	
+	return bounds;
 }
 
 OverlayPopover.prototype.pan = function () {
@@ -94,26 +86,26 @@ OverlayPopover.prototype.pan = function () {
 	var xOffset = 0, yOffset = 0;
 
     map = this.getMap();
-// 
+
     if (map instanceof google.maps.Map) {
 		var mapDiv = map.getDiv();
 		var mapWidth = mapDiv.offsetWidth;
 		var mapHeight = mapDiv.offsetHeight;
-	// 	var overlayOffsetX = 0;
-	// 	var overlayOffsetY = 0;
-	// 	var overlayWidth = $(this.container).width();
-	// 	var overlayHeight = $(this.container).height();
-	// 	var padding = 10;
-	// 	// var position = this.getProjection().fromLatLngToDivPixel(coords);
-	// 	
-	// 	
-		var containerLeft = $(this.container).data('x');
-		var containerTop =  $(this.container).data('y');
-		var containerWidth = $(this.container).outerWidth();
-		var containerHeight = $(this.container).outerHeight();
+		var padding = this.panPadding;
+		var bounds = this.popoverBounds();
+			
+		if ( bounds.x < 0 )
+		{
+			xOffset = bounds.x - 0 - padding;
+		}
+		else if ( ( bounds.x + bounds.w ) > mapWidth )
+		{
+			xOffset = (bounds.x + bounds.w) - mapWidth + padding;
+		}
 		
-		if ( (containerLeft + containerWidth) > mapWidth ) {
-			xOffset = mapWidth - (containerLeft + containerWidth) - padding;
+		if ( (bounds.y < 0 ) )
+		{
+			yOffset = bounds.y - 0 - padding;
 		}
 	
 		map.panBy(xOffset, yOffset);
